@@ -8,18 +8,20 @@ def dict_factory(cursor, row):
         d[col[0]] = row[idx]
     return d
 
-conn = sqlite3.connect('blog.db')
-conn.row_factory = dict_factory
 
-c = conn.cursor()
-c.execute("SELECT * FROM posts")
-posts = c.fetchall()
-conn.close
+#c.execute("SELECT * FROM posts")
+#posts = c.fetchall()
+#conn.close
 app = Flask(__name__)
 
 
 @app.route('/posts', methods=['GET'])
 def get_posts():
+    conn = sqlite3.connect('blog.db')
+    conn.row_factory = dict_factory
+    c = conn.cursor()
+    posts = c.execute("SELECT * FROM posts").fetchall()
+    conn.close
     return jsonify({'posts': posts})
 
 @app.route('/post', methods=['POST'])
@@ -35,4 +37,3 @@ def create_task():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
-    #app.run(debug=True, host='0.0.0.0', port=80)
