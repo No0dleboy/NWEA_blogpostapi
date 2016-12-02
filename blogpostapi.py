@@ -8,7 +8,7 @@ conn = sqlite3.connect('blog.db')
 c = conn.cursor()
 
 # Insert a row of data
-c.execute("INSERT INTO posts VALUES ('1','TEST','Testing')")
+c.execute("INSERT INTO posts(title, body) VALUES ('TEST','Testing')")
 
 # Commit changes
 conn.commit()
