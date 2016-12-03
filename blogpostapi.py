@@ -27,6 +27,7 @@ def get_posts():
 
 # Setup POST method for /post uri
 @app.route('/post', methods=['POST'])
+# Connect to database, parse title and body from json and insert.
 def create_post():
     conn = sqlite3.connect('blog.db')
     c = conn.cursor()
@@ -34,16 +35,9 @@ def create_post():
         'title': request.json['title'],
         'body': request.json['body']
     } 
-    print post
-    print post['title']
-    print post['body']
     c.execute("INSERT INTO posts(title, body) VALUES (?,?)", (post['title'], post['body']))
-    conn.commit
-    conn.close
-    conn = sqlite3.connect('blog.db')
-    c = conn.cursor()
-    for row in c.execute("SELECT * FROM posts"):
-      print row
+    conn.commit()
+    conn.close()
     return 'OK'
 
 # Run the app on the host IP
