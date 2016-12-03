@@ -2,7 +2,7 @@
 
 # import required modules
 from flask import Flask, request, jsonify
-import sqlite3
+import sqlite3, json
 
 #  Format the results of a sql row from a list into a set of key/value pairs (to get the column names)
 def dict_factory(cursor, row):
@@ -24,6 +24,20 @@ def get_posts():
     posts = c.execute("SELECT * FROM posts").fetchall()
     conn.close
     return jsonify({'posts': posts})
+
+# Setup POST method for /post uri
+@app.route('/post', methods=['POST'])
+def create_post():
+    post = {
+        'title': request.json['title'],
+        'body': request.json['body']
+    } 
+    print post
+    conn = sqlite3.connect('blog.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO posts(title, body) VALUES (?,?)", (post['title'], post['body']))
+    conn.commit
+    conn.close
 
 # Run the app on the host IP
 if __name__ == '__main__':
