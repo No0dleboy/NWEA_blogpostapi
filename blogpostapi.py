@@ -36,9 +36,13 @@ def create_post():
         'body': request.json['body']
     } 
     c.execute("INSERT INTO posts(title, body) VALUES (?,?)", (post['title'], post['body']))
+    conn.row_factory = dict_factory
+    postid = c.lastrowid
+    print postid
+    newpost = c.execute("SELECT * FROM posts WHERE post_id=?", (postid,)).fetchall()
     conn.commit()
     conn.close()
-    return 'OK'
+    return jsonify({'posted': newpost})
 
 # Run the app on the host IP
 if __name__ == '__main__':
