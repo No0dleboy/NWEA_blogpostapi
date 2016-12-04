@@ -37,7 +37,6 @@ def create_post():
         conn.row_factory = dict_factory
         postid = c.lastrowid
         newpost = c.execute("SELECT * FROM posts WHERE post_id=?", (postid,)).fetchone()
-#    newpost = c.execute("SELECT * FROM posts WHERE post_id=?", (postid,))
         conn.commit()
         conn.close()
         return jsonify({'posted': newpost}),200
