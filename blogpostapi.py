@@ -4,7 +4,7 @@
 import sqlite3, os
 from flask import Flask, request, jsonify, abort
 
-dbase = os.path.dirname(os.path.realpath(__file__)) + '/blog.db' 
+dbase = os.path.dirname(os.path.realpath(__file__)) + '/blog.db'
 
 #  Format the results of a sql row from a list into a set of key/value pairs (to get the column names)
 def dict_factory(cursor, row):
@@ -31,7 +31,7 @@ def get_posts():
 @app.route('/post', methods=['POST'])
 # Connect to database, and set post value to json input.
 def create_post():
-    conn = sqlite3.connect('dbase')
+    conn = sqlite3.connect(dbase)
     c = conn.cursor()
     post = request.json
     # Try to insert values from post array into database, then return post as json.
