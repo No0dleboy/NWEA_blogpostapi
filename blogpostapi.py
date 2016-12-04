@@ -48,7 +48,6 @@ def create_post():
         conn.close()
         abort(400)
 
-# Run the app on the host IP
+# Run the app on localhost.  To listen on host IP, change localhost to 0.0.0.0
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
-    #app.run(debug=True, host='localhost')
+    app.run(debug=True, host='localhost')
