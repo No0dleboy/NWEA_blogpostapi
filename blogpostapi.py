@@ -1,7 +1,7 @@
 #! /usr/bin/python
 
 # import required modules
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 import sqlite3, json
 
 #  Format the results of a sql row from a list into a set of key/value pairs (to get the column names)
@@ -31,18 +31,19 @@ def get_posts():
 def create_post():
     conn = sqlite3.connect('blog.db')
     c = conn.cursor()
-    post = {
-        'title': request.json['title'],
-        'body': request.json['body']
-    } 
-    c.execute("INSERT INTO posts(title, body) VALUES (?,?)", (post['title'], post['body']))
-    conn.row_factory = dict_factory
-    postid = c.lastrowid
-    print postid
-    newpost = c.execute("SELECT * FROM posts WHERE post_id=?", (postid,)).fetchall()
-    conn.commit()
-    conn.close()
-    return jsonify({'posted': newpost})
+    post = request.json
+    try:
+        c.execute("INSERT INTO posts(title, body) VALUES (?,?)", (post['title'], post['body']))
+        conn.row_factory = dict_factory
+        postid = c.lastrowid
+        newpost = c.execute("SELECT * FROM posts WHERE post_id=?", (postid,)).fetchone()
+#    newpost = c.execute("SELECT * FROM posts WHERE post_id=?", (postid,))
+        conn.commit()
+        conn.close()
+        return jsonify({'posted': newpost}),200
+    except:
+        conn.close()
+        abort(400)
 
 # Run the app on the host IP
 if __name__ == '__main__':
