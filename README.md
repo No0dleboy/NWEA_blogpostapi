@@ -18,6 +18,8 @@ curl -i http://localhost:5000/posts
 # Create new post:
 curl -i -H "Content-Type: application/json" -X POST -d '{"title":"Title of Post","body":"Content of post."}' http://localhost:5000/post
 ```
+To run on host IP, change 'localhost' in last line to '0.0.0.0'.
+
 ### Prerequisites
 
 * Python 2.6+
