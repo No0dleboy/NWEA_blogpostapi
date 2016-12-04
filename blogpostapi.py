@@ -1,8 +1,8 @@
 #! /usr/bin/python
 
 # import required modules
+import sqlite3
 from flask import Flask, request, jsonify, abort
-import sqlite3, json
 
 #  Format the results of a sql row from a list into a set of key/value pairs (to get the column names)
 def dict_factory(cursor, row):
